@@ -3,7 +3,7 @@ name: Deployment workflow to GitHub Pages
 on:
   workflow_dispatch:
   push:
-    branches: [ "staging", "live" ]
+    branches: [ "live" ]
     paths: [ "site/**" ]
 
 jobs:
