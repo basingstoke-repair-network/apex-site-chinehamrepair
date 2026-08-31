@@ -1,27 +1,44 @@
 # SPDX-FileCopyrightText: Chineham Repair Cafe - 2023 to 2026
 # SPDX-License-Identifier: MIT
 
-name: Deployment workflow to GitHub Pages
+name: Build site
 
 on:
-  workflow_dispatch:
   push:
-    branches: [ "staging", "live" ]
-    paths: [ "site/**" ]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  deployments: write
+
+concurrency:
+  group: 'pages-${{ github.ref }}'
+  cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
-    name: Build & deploy site to GitHub Pages.
-    permissions:
-      actions: read
-      contents: write
-      pages: write
-    concurrency: site-build-${{ github.ref }}
+  build-deploy:
     runs-on: ubuntu-latest
+    name: Build the website
+    outputs:
+      deploy-url: ${{ steps.netlify-deploy.outputs.deploy-url }}
     steps:
-    - uses: actions/checkout@v6
-    - name: Deploy to GitHub.
-      uses: JamesIves/github-pages-deploy-action@v4
-      with:
-        folder: site
-        single-commit: true
+      - uses: actions/checkout@v7
+      - uses: nwtgck/actions-netlify@v4.0.0
+        id: netlify-deploy
+        with:
+          publish-dir: './site'
+          production-branch: live
+          production-deploy: ${{ github.ref == 'refs/heads/live' }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Deploy from GitHub Actions"
+          enable-pull-request-comment: true
+          enable-commit-comment: false
+          enable-commit-status: false
+          enable-github-deployment: false
+          overwrites-pull-request-comment: true
+          github-deployment-environment: ${{ github.ref == 'refs/heads/live' && 'production' || github.event.number != null && format('pr-{0}', github.event.number) || format('branch-{0}', github.ref_name) }}
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
