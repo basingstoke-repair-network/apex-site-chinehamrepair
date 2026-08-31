@@ -1,5 +1,8 @@
 /**
 
+* SPDX-FileCopyrightText: Chineham Repair Cafe - 2023 to 2026
+* SPDX-License-Identifier: MIT
+
 * Template Name: Dewi - v4.7.0
 
 * Template URL: https://bootstrapmade.com/dewi-free-multi-purpose-html-template/

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Chineham Repair Cafe - 2023 to 2026
+# SPDX-License-Identifier: MIT
+
 name: Deploy Staging to Live site
 
 on:

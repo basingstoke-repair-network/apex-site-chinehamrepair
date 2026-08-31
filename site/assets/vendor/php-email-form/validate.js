@@ -1,5 +1,8 @@
 /**
 
+* SPDX-FileCopyrightText: Chineham Repair Cafe - 2023 to 2026
+* SPDX-License-Identifier: MIT
+
 * PHP Email Form Validation - v3.2
 
 * URL: https://bootstrapmade.com/php-email-form/
